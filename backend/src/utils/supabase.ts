@@ -8,8 +8,16 @@ export const supabase = createClient(
 
 export async function checkConnection(): Promise<boolean> {
   try {
-    const { data, error } = await supabase.from('metrics').select('count()', { count: 'exact' });
-    if (error) throw error;
+    // Simple select query instead of count() to avoid PGRST123 error
+    const { error } = await supabase
+      .from('metrics')
+      .select('id')
+      .limit(1);
+
+    if (error) {
+      console.error('❌ Supabase connection error:', error);
+      return false;
+    }
     return true;
   } catch (error) {
     console.error('❌ Supabase connection failed:', error);

@@ -41,7 +41,7 @@ export default function AlertPanel({ anomaly }: AlertPanelProps) {
               </div>
               <p className="mt-1 text-base">{item.message}</p>
               <div className="mt-2 text-sm text-gray-600">
-                Value: <span className="font-mono">{item.metric_value.toFixed(2)}</span>
+                Value: <span className="font-mono">{item.metric_value?.toFixed(2) ?? 'N/A'}</span>
                 {item.threshold && (
                   <>
                     {' • Threshold: '}

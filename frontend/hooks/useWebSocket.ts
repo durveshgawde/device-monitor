@@ -18,8 +18,14 @@ export function useWebSocket(url: string) {
 
                 ws.current.onmessage = (event) => {
                     try {
-                        const data = JSON.parse(event.data);
-                        setMetrics(data);
+                        const message = JSON.parse(event.data);
+                        // Backend sends: { type: 'metrics_update', data: {...}, timestamp: ... }
+                        if (message.type === 'metrics_update' && message.data) {
+                            setMetrics(message.data);
+                        } else if (message.cpu_percent !== undefined) {
+                            // Handle direct metrics format
+                            setMetrics(message);
+                        }
                     } catch (error) {
                         console.error('Failed to parse WebSocket message:', error);
                     }

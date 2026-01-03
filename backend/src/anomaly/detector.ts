@@ -50,12 +50,12 @@ export async function checkAnomalies(): Promise<void> {
 
                 // Store anomaly
                 const anomalyId = await storeAnomalies({
-                    id: 0,
+                    id: 0, // Will be ignored by database, auto-generated
                     created_at: new Date().toISOString(),
                     rule_id: rule.name,
                     severity: rule.severity,
                     description: `${rule.name} detected`,
-                    metric_value: latestMetric[rule.name as keyof typeof latestMetric],
+                    metric_value: latestMetric[rule.name as keyof typeof latestMetric] || 0,
                     device_id: env.DEVICE_ID
                 });
 
