@@ -8,32 +8,35 @@ const execAsync = promisify(exec);
 
 async function getWindowsProcesses(): Promise<ProcessInfo[]> {
   try {
-    const { stdout } = await execAsync('wmic process get processid,name,workingsetsize /format:csv');
-    const lines = stdout.trim().split('\n').slice(1); // Skip header
+    // Use PowerShell Get-Process with CSV output for reliable parsing
+    const command = `powershell -Command "Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 20 Id,ProcessName,WorkingSet64 | ConvertTo-Csv -NoTypeInformation"`;
+    const { stdout } = await execAsync(command);
+    const lines = stdout.trim().split('\n').slice(1); // Skip CSV header
 
     const processes: ProcessInfo[] = lines
       .filter(line => line.trim())
       .map(line => {
-        const parts = line.split(',');
-        if (parts.length < 4) return null;
+        // Parse CSV: "Id","ProcessName","WorkingSet64"
+        const match = line.match(/"?(\d+)"?,"?([^"]+)"?,"?(\d+)"?/);
+        if (!match) return null;
 
-        const name = parts[1] || 'Unknown';
-        const workingSetSize = parseInt(parts[2]) || 0;
-        const pid = parseInt(parts[3]) || 0;
+        const pid = parseInt(match[1]) || 0;
+        const name = match[2] || 'Unknown';
+        const workingSetSize = parseInt(match[3]) || 0;
 
         if (!pid) return null;
 
         return {
           pid,
           name,
-          cpu_percent: 0, // WMIC doesn't easily provide CPU percent
+          cpu_percent: 0,
           memory_mb: workingSetSize / (1024 * 1024),
-          memory_percent: (workingSetSize / (os.totalmem())) * 100
+          memory_percent: (workingSetSize / (os.totalmem())) * 100,
+          status: 'running'
         };
       })
       .filter((p): p is ProcessInfo => p !== null)
       .filter(p => p.memory_mb > 10)
-      .sort((a, b) => b.memory_mb - a.memory_mb)
       .slice(0, 15);
 
     return processes;
@@ -65,7 +68,8 @@ async function getUnixProcesses(): Promise<ProcessInfo[]> {
           name,
           cpu_percent: cpuPercent,
           memory_mb: (os.totalmem() * memPercent / 100) / (1024 * 1024),
-          memory_percent: memPercent
+          memory_percent: memPercent,
+          status: 'running' // Active processes are running
         };
       })
       .filter((p): p is ProcessInfo => p !== null);

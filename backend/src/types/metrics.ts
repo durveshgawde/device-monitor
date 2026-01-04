@@ -25,6 +25,7 @@ export interface ProcessInfo {
   cpu_percent: number;
   memory_mb: number;
   memory_percent: number;
+  status: string;
 }
 
 export interface TopProcesses extends ProcessInfo {

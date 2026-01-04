@@ -16,8 +16,11 @@ export default function TrendChart({ title, data, dataKey }: TrendChartProps) {
     );
   }
 
+  // Reverse data to show oldest to newest (backend returns descending order)
+  const chartData = [...data].reverse();
+
   // Calculate min and max for scaling
-  const values = data.map((d) => {
+  const values = chartData.map((d) => {
     const value = d[dataKey];
     return typeof value === 'number' ? value : 0;
   });
@@ -28,16 +31,20 @@ export default function TrendChart({ title, data, dataKey }: TrendChartProps) {
   // Create SVG path for the chart
   const width = 100; // percentage
   const height = 150; // pixels
-  const points = data.map((d, i) => {
+
+  // Handle single data point edge case (avoid division by zero)
+  const divisor = chartData.length > 1 ? chartData.length - 1 : 1;
+
+  const points = chartData.map((d, i) => {
     const value = typeof d[dataKey] === 'number' ? d[dataKey] : 0;
-    const x = (i / (data.length - 1)) * width;
+    const x = (i / divisor) * width;
     const y = height - ((value - min) / range) * height;
     return `${x},${y}`;
   }).join(' ');
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+      <h3 className="text-lg font-semibold mb-4 text-red-500">{title}</h3>
 
       <div className="relative" style={{ height: `${height}px` }}>
         <svg
