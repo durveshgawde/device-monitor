@@ -33,7 +33,7 @@ Format as JSON: { "rootCause": "...", "recommendations": "...", "status": "..." 
         const response = await axios.post(
             'https://openrouter.ai/api/v1/chat/completions',
             {
-                model: 'openrouter/auto',
+                model: 'mistralai/devstral-2512:free',
                 messages: [{ role: 'user', content: prompt }],
                 temperature: 0.7
             },
@@ -46,16 +46,40 @@ Format as JSON: { "rootCause": "...", "recommendations": "...", "status": "..." 
             }
         );
 
-        const content = response.data.choices.message.content;
+        // Validate response structure before accessing nested properties
+        const choices = response.data?.choices;
+        if (!choices || !Array.isArray(choices) || choices.length === 0) {
+            logger.warn('OpenRouter returned empty or invalid choices array');
+            return {
+                rootCause: 'AI analysis unavailable (empty response)',
+                recommendations: 'Try again later or check API status',
+                status: 'INFO'
+            };
+        }
+
+        const content = choices[0]?.message?.content;
+        if (!content) {
+            logger.warn('OpenRouter response missing content');
+            return {
+                rootCause: 'AI analysis unavailable (no content)',
+                recommendations: 'Try again later or check API status',
+                status: 'INFO'
+            };
+        }
+
         const jsonMatch = content.match(/\{[\s\S]*\}/);
 
         if (jsonMatch) {
-            const parsed = JSON.parse(jsonMatch);
-            return {
-                rootCause: parsed.rootCause,
-                recommendations: parsed.recommendations,
-                status: parsed.status
-            };
+            try {
+                const parsed = JSON.parse(jsonMatch[0]);
+                return {
+                    rootCause: parsed.rootCause || 'Unknown',
+                    recommendations: parsed.recommendations || 'No recommendations',
+                    status: parsed.status || 'INFO'
+                };
+            } catch (parseError) {
+                logger.warn('Failed to parse AI response as JSON');
+            }
         }
 
         return {

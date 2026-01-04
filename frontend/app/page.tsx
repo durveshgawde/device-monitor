@@ -49,11 +49,11 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Alerts */}
-      {hasAnomalies && <AlertPanel anomaly={anomalies} />}
-
       {/* AI Insights */}
       {latestAnomaly && <AIInsight anomaly={latestAnomaly} />}
+
+      {/* Alerts */}
+      {hasAnomalies && <AlertPanel anomaly={anomalies} />}
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

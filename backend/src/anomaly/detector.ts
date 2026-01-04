@@ -64,6 +64,9 @@ export async function checkAnomalies(): Promise<void> {
                     const analysis = await analyzeWithAI(rule.name, latestMetric);
                     if (analysis) {
                         await storeInsight(anomalyId, analysis);
+                        logger.info(`🤖 AI insight generated: ${analysis.status} - ${analysis.rootCause.slice(0, 50)}...`);
+                    } else {
+                        logger.warn('🤖 AI analysis returned null');
                     }
                 }
             }
