@@ -6,7 +6,7 @@ interface MetricCardProps {
 }
 
 export default function MetricCard({ title, value, unit, critical }: MetricCardProps) {
-  const displayValue = value !== undefined ? value.toFixed(1) : '--';
+  const displayValue = value != null ? value.toFixed(1) : '--';
 
   return (
     <div className={`p-6 rounded-lg shadow-lg ${critical ? 'bg-red-50 border-2 border-red-500' : 'bg-white border border-gray-200'

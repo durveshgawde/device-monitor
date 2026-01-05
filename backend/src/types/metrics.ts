@@ -6,6 +6,13 @@ export interface SystemMetrics {
   disk_percent?: number;
   cores: number;
   device_id: string;
+  // New metrics
+  network_in_mbps?: number;
+  network_out_mbps?: number;
+  load_avg_1min?: number;
+  uptime_hours?: number;
+  free_memory_mb?: number;
+  total_memory_mb?: number;
 }
 
 export interface AggregatedMetrics {
@@ -17,6 +24,33 @@ export interface AggregatedMetrics {
   p99_latency: number;
   error_rate: number;
   device_id: string;
+  // System metrics
+  disk_percent?: number;
+  network_in_mbps?: number;
+  network_out_mbps?: number;
+  load_avg_1min?: number;
+  load_avg_5min?: number;
+  load_avg_15min?: number;
+  uptime_hours?: number;
+  free_memory_mb?: number;
+  total_memory_mb?: number;
+  swap_percent?: number;
+  // Process metrics
+  top_process_name?: string;
+  top_process_cpu?: number;
+  top_process_memory_mb?: number;
+  total_processes?: number;
+  // Application metrics
+  request_count?: number;
+  success_rate?: number;
+  avg_response_time?: number;
+  p50_response_time?: number;
+  p99_response_time?: number;
+  // Database metrics
+  anomaly_count_24h?: number;
+  resolved_anomalies?: number;
+  total_rules?: number;
+  enabled_rules?: number;
 }
 
 export interface ProcessInfo {

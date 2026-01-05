@@ -1,13 +1,11 @@
 'use client';
 
-import { useMetrics } from '@/hooks/useMetrics';
 import { ProcessInfo } from '@/types';
 import { useEffect, useState } from 'react';
 
 export default function ProcessesPage() {
-    const { loading } = useMetrics();
     const [processes, setProcesses] = useState<ProcessInfo[]>([]);
-    const [processesLoading, setProcessesLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -27,7 +25,7 @@ export default function ProcessesPage() {
                 setError('Failed to connect to backend. Make sure the server is running.');
                 setProcesses([]);
             } finally {
-                setProcessesLoading(false);
+                setLoading(false);
             }
         };
 
@@ -36,7 +34,7 @@ export default function ProcessesPage() {
         return () => clearInterval(interval);
     }, []);
 
-    if (loading || processesLoading) {
+    if (loading) {
         return <div className="text-center py-10">Loading processes...</div>;
     }
 

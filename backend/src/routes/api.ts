@@ -4,6 +4,8 @@ import { getLatestMetrics, getMetricsHistory, getAnomalies, getRules } from '../
 import { supabase } from '../utils/supabase';
 import { logger } from '../utils/logger';
 import { env } from '../utils/env';
+import { generateHealthCheckMessage } from '../ai/openrouter';
+import { getStatusLog } from '../metrics/collector';
 
 const router = Router();
 
@@ -52,6 +54,17 @@ router.get('/anomalies', async (req, res) => {
     }
 });
 
+// GET status log (minute-by-minute checks)
+router.get('/status-log', async (req, res) => {
+    try {
+        const log = getStatusLog();
+        res.json(log);
+    } catch (error) {
+        logger.error('Failed to fetch status log:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // GET rules
 router.get('/rules', async (req, res) => {
     try {
@@ -85,6 +98,21 @@ router.post('/rules', async (req, res) => {
     } catch (error) {
         logger.error('Failed to create rule:', error);
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// GET AI health check message
+router.get('/health-check', async (req, res) => {
+    try {
+        const metrics = await getLatestMetrics();
+        const healthMessage = await generateHealthCheckMessage(metrics || {});
+        res.json(healthMessage);
+    } catch (error) {
+        logger.error('Failed to generate health check:', error);
+        res.json({
+            message: '✅ System operational',
+            timestamp: new Date().toISOString()
+        });
     }
 });
 

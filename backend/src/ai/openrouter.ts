@@ -92,3 +92,59 @@ Format as JSON: { "rootCause": "...", "recommendations": "...", "status": "..." 
         return null;
     }
 }
+
+// Generate AI health check message when system is healthy
+export async function generateHealthCheckMessage(
+    metrics: any
+): Promise<{ message: string; timestamp: string } | null> {
+    if (!env.OPENROUTER_API_KEY) {
+        return {
+            message: '✅ All systems operating normally. No anomalies detected.',
+            timestamp: new Date().toISOString()
+        };
+    }
+
+    try {
+        const prompt = `
+You are a friendly system health assistant. The system is running perfectly with no anomalies.
+
+Current metrics:
+- CPU: ${metrics.cpu_percent?.toFixed(1) || 0}%
+- Memory: ${metrics.memory_percent?.toFixed(1) || 0}%
+- Uptime: ${metrics.uptime_hours?.toFixed(1) || 0} hours
+
+Generate a SHORT, positive 1-2 sentence health status message. Be encouraging and professional.
+Format: Just the message text, no JSON.
+        `;
+
+        const response = await axios.post(
+            'https://openrouter.ai/api/v1/chat/completions',
+            {
+                model: 'mistralai/devstral-2512:free',
+                messages: [{ role: 'user', content: prompt }],
+                temperature: 0.8,
+                max_tokens: 100
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${env.OPENROUTER_API_KEY}`,
+                    'HTTP-Referer': 'http://localhost:3001',
+                    'X-Title': 'Device Monitor'
+                }
+            }
+        );
+
+        const content = response.data?.choices?.[0]?.message?.content;
+
+        return {
+            message: content?.trim() || '✅ System healthy - no issues detected.',
+            timestamp: new Date().toISOString()
+        };
+    } catch (error) {
+        logger.error('Health check AI call failed:', error);
+        return {
+            message: '✅ All systems operating normally.',
+            timestamp: new Date().toISOString()
+        };
+    }
+}

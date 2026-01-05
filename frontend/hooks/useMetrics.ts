@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Metrics, Anomaly } from '@/types';
 import { api } from '@/utils/api';
 
@@ -6,11 +6,16 @@ export function useMetrics() {
     const [history, setHistory] = useState<Metrics[]>([]);
     const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
     const [loading, setLoading] = useState(true);
+    const isInitialLoad = useRef(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setLoading(true);
+                // Only show loading on initial load, not refreshes
+                if (isInitialLoad.current) {
+                    setLoading(true);
+                }
+
                 const [historyData, anomaliesData] = await Promise.all([
                     api.getMetricsHistory(1),
                     api.getAnomalies()
@@ -21,6 +26,7 @@ export function useMetrics() {
                 console.error('Failed to fetch metrics:', error);
             } finally {
                 setLoading(false);
+                isInitialLoad.current = false;
             }
         };
 
