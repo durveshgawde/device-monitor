@@ -7,10 +7,14 @@ import TrendChart from '@/components/TrendChart';
 import AlertPanel from '@/components/AlertPanel';
 import AIInsight from '@/components/AIInsight';
 import { useMetrics } from '@/hooks/useMetrics';
+import { useStatusLog } from '@/hooks/useStatusLog';
 
 export default function Dashboard() {
   const { metrics } = useContext(WebSocketContext);
   const { history, anomalies, loading } = useMetrics();
+  const { lastCheck, loading: statusLoading } = useStatusLog();
+
+  // statusLog provides synced timestamps from backend
 
   if (loading) {
     return <div className="text-center py-10">Loading dashboard...</div>;
@@ -129,10 +133,10 @@ export default function Dashboard() {
       </div>
 
       {/* Alerts */}
-      <AlertPanel anomalies={recentAnomalies} />
+      <AlertPanel lastCheck={lastCheck} loading={statusLoading} />
 
       {/* AI Insights */}
-      <AIInsight anomalies={recentAnomalies} />
+      <AIInsight lastCheck={lastCheck} anomalies={recentAnomalies} loading={statusLoading} />
 
       {/* Charts Row 1 - System */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

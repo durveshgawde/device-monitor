@@ -122,9 +122,7 @@ export async function aggregateAndStore(): Promise<AggregatedMetrics | null> {
     if (success) {
       metricsBuffer = [];
       logger.debug('Metrics aggregated and stored');
-
-      // Log status check
-      addStatusCheck(aggregated, false);
+      // Status checks are now handled by detector.ts
     }
 
     return aggregated;

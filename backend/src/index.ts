@@ -6,6 +6,7 @@ import { setupWebSocket } from './websocket/server';
 import { startMetricsCollection } from './metrics/collector';
 import { startAnomalyDetection } from './anomaly/detector';
 import { checkConnection } from './utils/supabase';
+import { seedDefaultRules } from './utils/seedRules';
 import { logger } from './utils/logger';
 import { env } from './utils/env';
 
@@ -37,6 +38,9 @@ async function start() {
     }
 
     logger.info('✅ Connected to Supabase');
+
+    // Seed default rules if they don't exist
+    await seedDefaultRules();
 
     // Start metrics collection
     startMetricsCollection();

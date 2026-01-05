@@ -126,30 +126,30 @@ export default function RulesPage() {
             {/* Create Rule Form */}
             {showForm && (
                 <div className="bg-white p-6 rounded-lg shadow-lg mb-8 border border-gray-200">
-                    <h2 className="text-xl font-semibold mb-6">Create New Rule</h2>
+                    <h2 className="text-xl font-semibold mb-6 text-slate-900">Create New Rule</h2>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Rule Name */}
                         <div>
-                            <label className="block text-sm font-medium mb-2">Rule Name</label>
+                            <label className="block text-sm font-medium mb-2 text-slate-900">Rule Name</label>
                             <input
                                 type="text"
                                 placeholder="e.g., High CPU Alert, Memory Spike"
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-slate-500"
                                 required
                             />
-                            <p className="text-xs text-gray-500 mt-1">Unique name for this rule</p>
+                            <p className="text-xs text-gray-500 mt-1 text-slate-500">Unique name for this rule</p>
                         </div>
 
                         {/* Condition */}
                         <div>
-                            <label className="block text-sm font-medium mb-2">Metric Condition</label>
+                            <label className="block text-sm font-medium mb-2 text-slate-900">Metric Condition</label>
                             <select
                                 value={formData.condition}
                                 onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-slate-500"
                                 required
                             >
                                 <option value="">Select a metric...</option>
@@ -161,13 +161,13 @@ export default function RulesPage() {
 
                         {/* Threshold */}
                         <div>
-                            <label className="block text-sm font-medium mb-2">Threshold Value</label>
+                            <label className="block text-sm font-medium mb-2 text-slate-900">Threshold Value</label>
                             <input
                                 type="number"
                                 placeholder="e.g., 80 for CPU > 80%"
                                 value={formData.threshold}
                                 onChange={(e) => setFormData({ ...formData, threshold: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-slate-500"
                                 step="0.1"
                                 required
                             />
@@ -176,11 +176,11 @@ export default function RulesPage() {
 
                         {/* Severity */}
                         <div>
-                            <label className="block text-sm font-medium mb-2">Severity Level</label>
+                            <label className="block text-sm font-medium mb-2 text-slate-900">Severity Level</label>
                             <select
                                 value={formData.severity}
                                 onChange={(e) => setFormData({ ...formData, severity: e.target.value })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-slate-500"
                             >
                                 {severityOptions.map(opt => (
                                     <option key={opt.value} value={opt.value}>{opt.label}</option>
