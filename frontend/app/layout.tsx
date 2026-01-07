@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import WebSocketProvider from '@/components/WebSocketProvider';
 import Navigation from '@/components/Navigation';
+import ChatWidget from '@/components/ChatWidget';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
           <main className="p-4 md:p-8">
             {children}
           </main>
+          <ChatWidget />
         </WebSocketProvider>
       </body>
     </html>
