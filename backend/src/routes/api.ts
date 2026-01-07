@@ -6,6 +6,7 @@ import { logger } from '../utils/logger';
 import { env } from '../utils/env';
 import { generateHealthCheckMessage } from '../ai/openrouter';
 import { getStatusLog } from '../metrics/collector';
+import chatRoutes from './chat';
 
 const router = Router();
 
@@ -134,5 +135,8 @@ router.get('/export/csv', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// Chat routes
+router.use('/', chatRoutes);
 
 export default router;

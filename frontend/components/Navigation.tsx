@@ -17,6 +17,7 @@ export default function Navigation() {
           <Link href="/processes" className="hover:text-blue-400">Processes</Link>
           <Link href="/anomalies" className="hover:text-blue-400">Anomalies</Link>
           <Link href="/rules" className="hover:text-blue-400">Rules</Link>
+          <Link href="/chat" className="hover:text-blue-400">💬 Chat</Link>
           <Link href="/export" className="hover:text-blue-400">Export</Link>
         </div>
 

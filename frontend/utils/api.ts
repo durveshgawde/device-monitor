@@ -37,6 +37,20 @@ export const api = {
         return res.json();
     },
 
+    async getChat(message: string): Promise<{ response: string; metrics_used: any }> {
+        const res = await fetch(`${API_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+        });
+        return res.json();
+    },
+
+    async getChatHistory(): Promise<any[]> {
+        const res = await fetch(`${API_URL}/api/chat/history`);
+        return res.json();
+    },
+
     async exportCSV() {
         window.location.href = `${API_URL}/api/export/csv`;
     }
