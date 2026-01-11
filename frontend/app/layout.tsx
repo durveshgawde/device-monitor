@@ -21,7 +21,7 @@ export default function RootLayout({
           <Navigation />
           <main className="p-4 md:p-8">
             {children}
-          </main>
+          </main> 
           <ChatWidget />
         </WebSocketProvider>
       </body>

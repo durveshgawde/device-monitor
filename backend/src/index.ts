@@ -3,6 +3,7 @@ import cors from 'cors';
 import http from 'http';
 import apiRoutes from './routes/api';
 import { setupWebSocket } from './websocket/server';
+import chatRoutes from './routes/chat';
 import { startMetricsCollection } from './metrics/collector';
 import { startAnomalyDetection } from './anomaly/detector';
 import { checkConnection } from './utils/supabase';
@@ -24,6 +25,7 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api', apiRoutes);
+app.use('/api', chatRoutes);
 
 // Setup WebSocket
 setupWebSocket(server);
