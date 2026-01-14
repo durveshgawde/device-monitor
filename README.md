@@ -20,6 +20,21 @@
 
 ---
 
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | Next.js 14, React, TypeScript, Tailwind CSS, Recharts |
+| **Backend** | Node.js 18+, Express.js, TypeScript |
+| **Database** | Supabase (PostgreSQL) |
+| **Real-time** | WebSocket (ws library) |
+| **AI/ML** | OpenRouter API (Mistral Devstral model) |
+| **System Monitoring** | systeminformation (Node.js native OS metrics) |
+| **Process Manager** | PM2 |
+| **Containerization** | Docker (optional, for cloud deployment) |
+
+---
+
 ## ✨ Features
 
 | Feature | Description |
@@ -27,7 +42,8 @@
 | 📊 **Real-time Metrics** | CPU, Memory, Disk, Network, Swap, Load Average |
 | 📈 **Trend Charts** | Historical data visualization |
 | 🔔 **Anomaly Detection** | Automatic alerts when thresholds are exceeded |
-| 🤖 **AI Chatbot** | Ask questions about your system's health |
+| 🤖 **AI Insights** | AI-powered root cause analysis and recommendations for anomalies |
+| 💬 **AI Chatbot** | Ask questions about your system's health |
 | ⚡ **Live Updates** | WebSocket streaming every second |
 | 📱 **Responsive UI** | Works on desktop, tablet, and mobile |
 | 🔧 **Custom Rules** | Define your own alerting thresholds |
@@ -35,7 +51,7 @@
 
 ---
 
-## � What It Monitors
+## 📋 What It Monitors
 
 - **CPU Usage** - Overall processor utilization
 - **Memory** - RAM usage and available memory
