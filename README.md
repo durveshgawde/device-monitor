@@ -74,6 +74,16 @@
 2. **Supabase** account - [Sign up free](https://supabase.com/)
 3. **OpenRouter API key** (optional) - For AI chatbot features
 
+---
+
+## ⚠️ Important Note
+
+This app monitors **real system metrics** of the machine it runs on. Docker deployment is not recommended as containers only show isolated container metrics, not actual host system data.
+
+**Always deploy natively** using the provided deployment scripts for accurate monitoring.
+
+---
+
 ### Quick Deployment
 
 **On Windows:**
@@ -129,14 +139,6 @@ The app runs using PM2 process manager:
 | Restart | `pm2 restart all` |
 | Stop | `pm2 stop all` |
 | Auto-start on boot | `pm2 startup` then `pm2 save` |
-
----
-
-## ⚠️ Important Note
-
-This app monitors **real system metrics** of the machine it runs on. Docker deployment is not recommended as containers only show isolated container metrics, not actual host system data.
-
-**Always deploy natively** using the provided deployment scripts for accurate monitoring.
 
 ---
 
